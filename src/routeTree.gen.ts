@@ -10,11 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AddNewRouteImport } from './routes/add-new'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as DirectoryRouteImport } from './routes/directory'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AddNewRoute = AddNewRouteImport.update({
+  id: '/add-new',
+  path: '/add-new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -22,31 +29,44 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DirectoryRoute = DirectoryRouteImport.update({
+  id: '/directory',
+  path: '/directory',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/add-new': typeof AddNewRoute
   '/auth': typeof AuthRoute
+  '/directory': typeof DirectoryRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/add-new': typeof AddNewRoute
   '/auth': typeof AuthRoute
+  '/directory': typeof DirectoryRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/add-new': typeof AddNewRoute
   '/auth': typeof AuthRoute
+  '/directory': typeof DirectoryRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth'
+  fullPaths: '/' | '/add-new' | '/auth' | '/directory'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth'
-  id: '__root__' | '/' | '/auth'
+  to: '/' | '/add-new' | '/auth' | '/directory'
+  id: '__root__' | '/' | '/add-new' | '/auth' | '/directory'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AddNewRoute: typeof AddNewRoute
   AuthRoute: typeof AuthRoute
+  DirectoryRoute: typeof DirectoryRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +78,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/add-new': {
+      id: '/add-new'
+      path: '/add-new'
+      fullPath: '/add-new'
+      preLoaderRoute: typeof AddNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -65,12 +92,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/directory': {
+      id: '/directory'
+      path: '/directory'
+      fullPath: '/directory'
+      preLoaderRoute: typeof DirectoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AddNewRoute: AddNewRoute,
   AuthRoute: AuthRoute,
+  DirectoryRoute: DirectoryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
