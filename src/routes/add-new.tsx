@@ -104,7 +104,12 @@ function CourseForm() {
 
   const mutation = useMutation({
     mutationFn: async (values: z.infer<typeof courseSchema>) => {
-      const { error } = await supabase.from("courses").insert(values);
+      const { error } = await supabase.from("courses").insert({
+        title: values.title,
+        category: values.category,
+        duration_weeks: values.duration_weeks,
+        description: values.description?.trim() ? values.description : null,
+      });
       if (error) throw error;
     },
     onSuccess: () => {
