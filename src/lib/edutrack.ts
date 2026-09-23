@@ -7,6 +7,7 @@ export type Course = {
   category: string | null;
   duration_weeks: number | null;
   created_at: string;
+  created_by: string | null;
 };
 
 export type EnrollmentStatus = "Active" | "Completed" | "Paused";
