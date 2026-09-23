@@ -104,11 +104,16 @@ function CourseForm() {
 
   const mutation = useMutation({
     mutationFn: async (values: z.infer<typeof courseSchema>) => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) throw new Error("You must be signed in to create a course");
       const { error } = await supabase.from("courses").insert({
         title: values.title,
         category: values.category,
         duration_weeks: values.duration_weeks,
         description: values.description?.trim() ? values.description : null,
+        created_by: user.id,
       });
       if (error) throw error;
     },
